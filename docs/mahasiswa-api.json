@@ -1,0 +1,534 @@
+{
+    "openapi" : "3.0.2",
+    "info": {
+        "title": "Mahasiswa API",
+        "description": "Mahasiswa API",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080"
+        }
+    ],
+    "paths": {
+        "/api/mahasiswa" : {
+            "post" : {
+                "description": "Register New Mahasiswa",
+                "requestBody" : {
+                    "content": {
+                        "application/json" : {
+                            "schema" : {
+                                "type": "object",
+                                "required": ["npm", "nama", "email", "password", "kd_kelas"],
+                                "properties": {
+                                    "npm" : {
+                                        "type": "string",
+                                        "minLength": 10,
+                                        "uniqueItems": true
+                                    },
+                                    "nama" : {
+                                        "type": "string",
+                                        "minLength": 6,
+                                        "uniqueItems": true
+                                    },
+                                    "email" : {
+                                        "type": "string",
+                                        "minLength": 6,
+                                        "uniqueItems": true
+                                    },
+                                    "password" : {
+                                        "type": "string",
+                                        "minLength": 6
+                                    },
+                                    "kd_kelas" : {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "examples": {
+                                "registerMahasiswa" : {
+                                    "description": "Register User Mahasiswa",
+                                    "value" : {
+                                        "npm" : "2022804088",
+                                        "nama" : "Herman",
+                                        "email" :  "herman123@gmail.com",
+                                        "password" : "rahasia",
+                                        "kd_kelas" : "SI 3 A"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "409" : {
+                        "description": "Mahasiswa already exists",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "mahasiswaAlreadyexists" : {
+                                        "description": "Mahasiswa already exists",
+                                        "value" : {
+                                            "code" : 409,
+                                            "status" : "Conflict",
+                                            "errors" : {
+                                                "message" : [
+                                                    "Mahasiswa already exists"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } ,
+                    "400" : {
+                        "description": "Validation Errors",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" :{
+                                        "description": "Validation error",
+                                        "value" : {
+                                            "code" : 400,
+                                            "status" : "Bad Request",
+                                            "errors" : {
+                                                "npm" : [
+                                                    "The npm field is required.",
+                                                    "npm 10 characters"
+                                                ],
+                                                "nama" : [
+                                                    "The nama field is required.",
+                                                    "The nama has already been taken.",
+                                                    "nama min 6 characters"
+                                                ], 
+                                                "email" : [
+                                                    "The email field is required.",
+                                                    "The email has already been taken.",
+                                                    "email min 6 characters"
+                                                ], 
+                                                "password" : [
+                                                    "The password field is required.",
+                                                    "password min 6 characters"
+                                                ],
+                                                "kd_kelas" : [
+                                                    "The kelas field is required."
+                                                ] 
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "201" : {
+                        "description": "Success Register Mahasiswa",
+                        "content": {
+                            "application/json" : {
+                                "schema" : {
+                                    "type": "object",
+                                    "properties": {
+                                        "code" : {
+                                            "type": "number"
+                                        },
+                                        "status" : {
+                                            "type": "string"
+                                        },
+                                        "data" : {
+                                            "type": "object",
+                                            "properties": {
+                                                "id" : {
+                                                    "type": "number"
+                                                },
+                                                "npm" : {
+                                                    "type": "string"
+                                                },
+                                                "nama" : {
+                                                    "type": "string"
+                                                },
+                                                "email" : {
+                                                    "type": "string"
+                                                },
+                                                "kelas" : {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "kd_kelas" : {
+                                                            "type" : "string"
+                                                        },
+                                                        "nama" : {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "success" : {
+                                        "description": "success register mahasiswa",
+                                        "value" : {
+                                            "code" : 201,
+                                            "status" : "Created",
+                                            "data" : {
+                                                "id" : 1,
+                                                "npm" : "2022804088",
+                                                "nama" : "Herman",
+                                                "email" : "herman123@gmail.com",
+                                                "kelas" : {
+                                                    "kd_kelas" : "SI 3A",
+                                                    "nama" : "SI 3A"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        },
+        "/api/mahasiswa/login" : {
+            "post" : {
+                "description": "Login User Mahasiswa",
+                "requestBody" : {
+                    "content": {
+                        "application/json" : {
+                            "schema" : {
+                                "type": "object",
+                                "required": ["email", "password"],
+                                "properties": {
+                                    "email" : {
+                                        "type": "string"
+                                    },
+                                    "password" : {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "examples": {
+                                "loginMahasiswa" : {
+                                    "description": "Login Mahasiswa",
+                                    "value" : {
+                                        "email" : "herman123@gmail.com",
+                                        "password" : "rahasia"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200" : {
+                        "description": "Success Login Mahasiswa",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                   "success" : {
+                                        "description": "Success Login Mahasiswa",
+                                        "value" : {
+                                            "code" : 200,
+                                            "status" : "Ok",
+                                            "data" : {
+                                                "id" : 1, 
+                                                "npm" : "2022804088",
+                                                "nama" : "Herman",
+                                                "email" : "herman123@gamil.com",
+                                                "kelas" : {
+                                                    "kd_kelas" : "SI 3A",
+                                                    "nama" : "SI 3A"
+                                                },
+                                                "token" : "asf8476ada465reer"
+                                            }
+                                        }
+                                   }
+                                },
+                                "schema" : {
+                                    "type": "object",
+                                    "properties": {
+                                        "code" : {
+                                            "type": "number"
+                                        },
+                                        "status" : {
+                                            "type": "string"
+                                        },
+                                        "data" : {
+                                            "type": "object",
+                                            "properties": {
+                                                "id" : {
+                                                    "type": "number"
+                                                },
+                                                "npm" : {
+                                                    "type": "string"
+                                                },
+                                                "nama" : {
+                                                    "type": "string"
+                                                },
+                                                "email" : {
+                                                    "type": "string"
+                                                },
+                                                "kelas" : {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "kd_kelas" :  {
+                                                            "type": "string"
+                                                        },
+                                                        "nama" : {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                },
+                                                "token" : {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400" : {
+                        "description": "validationerror",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" :{
+                                        "description": "Validation error",
+                                        "value" : {
+                                            "code" : 400,
+                                            "status" : "Bad Request",
+                                            "errors" : { 
+                                                "email" : [
+                                                    "email must not be blank",
+                                                    "email min 6 characters"
+                                                ], 
+                                                "password" : [
+                                                    "password must not be blank",
+                                                    "password min 6 characters"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401" : {
+                        "description": "Mahasiswa Is Invalid",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "invalidMahasiswa" :{
+                                        "description": "Mahasiswa Is Invalid",
+                                        "value" : {
+                                            "code" : 401,
+                                            "status" : "Unauthorized",
+                                            "errors" : {
+                                                "message" : [
+                                                    "email or password wrong"
+                                                ]
+                                            } 
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/mahasiswa/current" : {
+            "get" : {
+                "description": "Get current mahasiswa",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "401" : {
+                        "description": "Get current failed",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "logoutfailed": {
+                                        "description": "Gagal Logout",
+                                        "value" : {
+                                            "code" : 401,
+                                            "status" : "Unauthorized",
+                                            "errors" : {
+                                                "message" : [
+                                                    "Unauthorized"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "200" : {
+                        "description": "Get current mahasiswa",
+                        "content": {
+                            "application/json" : {
+                                "schema" : {
+                                    "type": "object",
+                                    "properties": {
+                                        "code" : {
+                                            "type": "number"
+                                        },
+                                        "status" : {
+                                            "type": "string"
+                                        },
+                                        "data" : {
+                                            "type": "object",
+                                            "properties": {
+                                                "id" : {
+                                                    "type": "number"
+                                                },
+                                                "npm" : {
+                                                    "type" : "string"
+                                                },
+                                                "nama" : {
+                                                    "type": "string"
+                                                },
+                                                "email" : {
+                                                    "type": "string"
+                                                },
+                                                "kelas" : {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "kd_kelas" : {
+                                                            "type": "string"
+                                                        },
+                                                        "nama" : {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "success" : {
+                                        "description": "Get current Mahasiswa",
+                                        "value" : {
+                                            "code" : 200,
+                                            "status" : "Ok",
+                                            "data" : {
+                                                "id" : 1,
+                                                "npm" : "2022804088",
+                                                "nama" : "Herman",
+                                                "email" : "Herman123@gmail.com",
+                                                "kelas" : {
+                                                    "kd_kelas" : "SI 3A",
+                                                    "nama" : "SI 3A"
+                                                },
+                                                "token" : "asf8476ada465reer"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/mahasiswa/logout" : {
+            "delete" : {
+                "description": "Logout current Mahasiswa",
+                "parameters": [
+                    {
+                        "name" : "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200" : {
+                        "description": "Succes logout mahasiswa",
+                        "content": {
+                            "application/json" : {
+                                "schema" : {
+                                    "type": "object",
+                                    "properties": {
+                                        "code" : 200,
+                                        "status" : "Ok",
+                                        "data" : {
+                                           "type": "object",
+                                           "properties": {
+                                                "message" : {
+                                                    "type": "array",
+                                                    "items" : {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                           }
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Success Logout",
+                                        "value" : {
+                                            "code" : 200,
+                                            "status" : "Ok",
+                                            "data" : {
+                                                "message" : [
+                                                    "Success logout"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401" : {
+                        "description": "Gagal Logout",
+                        "content": {
+                            "application/json" : {
+                                "schema" : {
+                                    "type": "object",
+                                    "properties": {
+                                        "errors" : {
+                                            "type": "object",
+                                            "properties": {
+                                                "message" : {
+                                                    "type": "array",
+                                                    "items" : {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "logoutfailed": {
+                                        "description": "Gagal Logout",
+                                        "value" : {
+                                            "code" : 401,
+                                            "status" : "Unauthorized",
+                                            "errors" : {
+                                                "message" : [
+                                                    "Unauthorized"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+}

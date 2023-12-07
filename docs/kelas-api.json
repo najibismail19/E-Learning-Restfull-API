@@ -1,0 +1,76 @@
+{
+    "openapi" : "3.0.2",
+    "info": {
+        "title": "Kelas API",
+        "description": "Kelas API",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080"
+        }
+    ],
+    "paths": {
+        "/api/kelas" : {
+            "get" : {
+                "description": "Get all kelas",
+                "parameters": [
+                    {
+                        "name" : "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200" :{
+                        "description": "Get all kelas",
+                        "content": {
+                            "application/json" : {
+                                "schema" : {
+                                    "type": "object",
+                                    "properties": {
+                                        "data" : {
+                                            "type": "array",
+                                            "items" : {
+                                                "type": "object",
+                                                "properties": {
+                                                    "kd_kelas" : {
+                                                        "type": "string"
+                                                    },
+                                                    "nama" : {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "success"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+
+            }
+        },
+        "/api/kelas/{kd_kelas}" : {
+            "get" : {
+
+            },
+            "put" : {
+
+            },
+            "delete" : {
+
+            }
+        },
+        "/api/kelas/{kd_kelas}/mahasiswa" : {
+            "get" : {
+
+            }
+        }
+    }
+}
